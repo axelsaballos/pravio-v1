@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pravio — QA Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@200;300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F4F6FB;
+  --navy:#2D3A52;
+  --navy-alt:#3d4f6a;
+  --blue:#7B9ED9;
+  --mint:#B8D4C8;
+  --muted-blue:#A8C5DA;
+  --border:#E2E8F4;
+  --card-bg:#E8EDF5;
+  --white:#FFFFFF;
+  --ff:'Geist',-apple-system,sans-serif;
+  --mono:'Geist Mono',monospace;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--ff);background:var(--bg);color:var(--navy);-webkit-font-smoothing:antialiased;cursor:none;overflow-x:hidden}
+
+/* CUSTOM CURSOR */
+#cursor{
+  position:fixed;width:12px;height:12px;
+  background:var(--navy);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .2s cubic-bezier(.32,.72,0,1),height .2s cubic-bezier(.32,.72,0,1),background .2s;
+  mix-blend-mode:multiply;
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1px solid rgba(45,58,82,.3);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform .08s linear,width .3s cubic-bezier(.32,.72,0,1),height .3s cubic-bezier(.32,.72,0,1),opacity .2s;
+}
+body.cursor-hover #cursor{width:40px;height:40px;background:var(--blue);opacity:.3}
+body.cursor-hover #cursor-ring{opacity:0}
+
+/* NAV */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:0 3rem;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .3s,backdrop-filter .3s,border-color .3s;
+}
+header.scrolled{
+  background:rgba(244,246,251,.9);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-name{font-size:15px;font-weight:400;letter-spacing:.18em;color:var(--navy)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:13px;color:rgba(45,58,82,.6);text-decoration:none;transition:color .2s;letter-spacing:.02em}
+.nav-links a:hover{color:var(--navy)}
+.nav-cta{
+  font-size:13px;font-weight:500;color:var(--white);
+  background:var(--navy);padding:9px 22px;border-radius:99px;
+  text-decoration:none;letter-spacing:.02em;
+  transition:transform .2s cubic-bezier(.32,.72,0,1),box-shadow .2s;
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,58,82,.25)}
+
+/* HERO — full viewport, centered statement */
+.hero{
+  position:relative;height:100dvh;min-height:600px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;
+  padding:0 2rem;
+}
+
+/* animated background: 3 soft orbs */
+.hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);animation:orbFloat 12s ease-in-out infinite}
+.orb-1{width:600px;height:600px;background:rgba(123,158,217,.18);top:-200px;left:-100px;animation-delay:0s}
+.orb-2{width:500px;height:500px;background:rgba(184,212,200,.15);bottom:-150px;right:-80px;animation-delay:-4s}
+.orb-3{width:400px;height:400px;background:rgba(168,197,218,.12);top:30%;left:40%;animation-delay:-8s}
+@keyframes orbFloat{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(40px,-30px) scale(1.05)}
+  66%{transform:translate(-20px,20px) scale(.95)}
+}
+
+/* hero text */
+.hero-content{position:relative;z-index:1;max-width:900px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.7);border:1px solid var(--border);
+  border-radius:99px;padding:6px 16px;
+  font-family:var(--mono);font-size:11px;color:var(--blue);
+  letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:40px;
+  backdrop-filter:blur(10px);
+  opacity:0;animation:fadeUp .8s cubic-bezier(.16,1,.3,1) .2s forwards;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);flex-shrink:0;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.hero-h1{
+  font-size:clamp(52px,8vw,96px);font-weight:200;
+  letter-spacing:-.04em;line-height:1.02;
+  color:var(--navy);
+  opacity:0;animation:fadeUp .9s cubic-bezier(.16,1,.3,1) .4s forwards;
+}
+.hero-h1 .line-blue{color:var(--blue);display:block}
+.hero-h1 .line-medium{font-weight:400}
+
+.hero-sub{
+  font-size:clamp(15px,1.8vw,18px);font-weight:300;
+  color:rgba(45,58,82,.6);line-height:1.8;
+  max-width:52ch;margin:28px auto 44px;
+  opacity:0;animation:fadeUp .9s cubic-bezier(.16,1,.3,1) .6s forwards;
+}
+
+.hero-btns{
+  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  opacity:0;animation:fadeUp .9s cubic-bezier(.16,1,.3,1) .8s forwards;
+}
+.btn-fill{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--navy);color:var(--white);
+  font-size:15px;font-weight:400;padding:14px 28px;
+  border-radius:99px;text-decoration:none;
+  transition:transform .25s cubic-bezier(.32,.72,0,1),box-shadow .25s;
+}
+.btn-fill:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(45,58,82,.22)}
+.btn-fill:active{transform:translateY(-1px)}
+.btn-fill-arrow{
+  width:26px;height:26px;border-radius:50%;
+  background:rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  transition:transform .25s cubic-bezier(.32,.72,0,1);
+}
+.btn-fill:hover .btn-fill-arrow{transform:translate(2px,-2px) scale(1.1)}
+
+.btn-line{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;color:rgba(45,58,82,.7);
+  font-size:15px;font-weight:400;padding:14px 28px;
+  border-radius:99px;text-decoration:none;
+  border:1px solid var(--border);
+  transition:border-color .2s,color .2s,transform .2s cubic-bezier(.32,.72,0,1);
+}
+.btn-line:hover{border-color:var(--blue);color:var(--navy);transform:translateY(-2px)}
+
+/* scroll indicator */
+.scroll-hint{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(45,58,82,.35);
+  opacity:0;animation:fadeUp .8s cubic-bezier(.16,1,.3,1) 1.2s forwards;
+}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(45,58,82,.3),transparent);animation:scrollDrop 1.5s ease-in-out infinite}
+@keyframes scrollDrop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* MARQUEE STRIP */
+.marquee-wrap{
+  overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:var(--white);padding:18px 0;
+}
+.marquee-track{
+  display:flex;gap:0;width:max-content;
+  animation:marquee 28s linear infinite;
+}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{
+  display:flex;align-items:center;gap:12px;
+  padding:0 48px;white-space:nowrap;
+  font-size:13px;font-weight:400;color:rgba(45,58,82,.45);
+  letter-spacing:.04em;
+}
+.marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--mint);flex-shrink:0}
+
+/* SERVICES */
+.services{padding:120px 3rem;max-width:1200px;margin:0 auto}
+.section-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.section-h2{font-size:clamp(34px,4vw,54px);font-weight:200;letter-spacing:-.03em;line-height:1.1;color:var(--navy);margin-bottom:16px}
+.section-h2 em{font-style:normal;font-weight:400}
+.section-sub{font-size:15px;font-weight:300;color:rgba(45,58,82,.6);line-height:1.75;max-width:50ch;margin-bottom:64px}
+
+/* Services 2x3 grid */
+.svc-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;
+}
+.svc-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:32px;
+  position:relative;
+  transition:border-color .2s cubic-bezier(.32,.72,0,1),transform .2s cubic-bezier(.32,.72,0,1),box-shadow .2s;
+  cursor:default;
+}
+.svc-card:hover{
+  border-color:var(--blue);
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(123,158,217,.12);
+}
+.svc-icon-wrap{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--card-bg);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;
+}
+.svc-icon-wrap svg{width:16px;height:16px;stroke:var(--blue);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.svc-title{font-size:15px;font-weight:500;color:var(--navy);letter-spacing:-.015em;margin-bottom:8px;line-height:1.35}
+.svc-desc{font-size:13px;font-weight:300;color:rgba(45,58,82,.6);line-height:1.7}
+.svc-more{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:18px;font-size:12px;color:var(--blue);
+  opacity:0;transform:translateX(-6px);
+  transition:opacity .2s,transform .2s cubic-bezier(.32,.72,0,1);
+}
+.svc-card:hover .svc-more{opacity:1;transform:translateX(0)}
+.term-bar{background:#1A1F2A;padding:10px 16px;display:flex;align-items:center;gap:7px}
+.term-dot{width:10px;height:10px;border-radius:50%}
+.term-body{padding:16px 20px}
+.tc-dim{color:rgba(255,255,255,.2)}
+.tc-cmd{color:#818CF8}
+.tc-ok{color:#4ADE80}
+.tc-run{color:rgba(255,255,255,.35)}
+
+/* PROCESS */
+.process{
+  background:var(--navy);padding:120px 3rem;
+  position:relative;overflow:hidden;
+}
+.process::before{
+  content:'';position:absolute;top:-200px;right:-200px;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(123,158,217,.12) 0%,transparent 70%);
+}
+.process-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.process .section-label{color:var(--mint)}
+.process .section-h2{color:var(--white)}
+.process .section-sub{color:rgba(255,255,255,.5);margin-bottom:80px}
+
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.process-steps::before{
+  content:'';position:absolute;top:20px;
+  left:calc(12.5% + 20px);right:calc(12.5% + 20px);
+  height:1px;background:linear-gradient(to right,var(--blue),rgba(123,158,217,.1));
+}
+.pstep{padding:0 2rem 0 0;position:relative;z-index:1}
+.pstep-circle{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;font-weight:500;color:var(--blue);
+  margin-bottom:24px;flex-shrink:0;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.pstep-phase{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.25);display:block;margin-bottom:10px}
+.pstep-title{font-size:15px;font-weight:500;color:var(--white);margin-bottom:8px;letter-spacing:-.01em}
+.pstep-desc{font-size:13px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.65}
+
+/* BIG NUMBERS */
+.numbers{background:var(--white);padding:100px 3rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.numbers-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border-radius:16px;overflow:hidden}
+.num-cell{background:var(--white);padding:48px 40px}
+.num-val{font-size:clamp(52px,6vw,72px);font-weight:200;letter-spacing:-.05em;color:var(--navy);line-height:1;margin-bottom:8px}
+.num-val span{color:var(--blue)}
+.num-label{font-size:13px;font-weight:300;color:rgba(45,58,82,.5);line-height:1.6}
+
+/* AUTOMATION */
+.automation{padding:120px 3rem;max-width:1200px;margin:0 auto}
+.auto-head{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;margin-bottom:48px}
+.auto-head-left{max-width:480px}
+.link-more{font-size:13px;color:var(--blue);text-decoration:none;display:flex;align-items:center;gap:5px;white-space:nowrap;align-self:flex-end;margin-bottom:3px;transition:gap .15s}
+.link-more:hover{gap:10px}
+
+.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border-radius:16px;overflow:hidden}
+.tpl{background:var(--white);padding:28px;display:flex;flex-direction:column;gap:14px;transition:background .18s}
+.tpl:hover{background:var(--card-bg)}
+.tpl-meta{display:flex;align-items:center;justify-content:space-between}
+.tpl-cat{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--blue)}
+.tpl-badge{font-size:10px;text-transform:uppercase;letter-spacing:.04em;background:rgba(123,158,217,.12);border-radius:4px;padding:3px 8px;color:var(--blue)}
+.tpl-name{font-size:14px;font-weight:500;color:var(--navy);letter-spacing:-.01em;line-height:1.35}
+.tpl-desc{font-size:12px;font-weight:300;color:rgba(45,58,82,.6);line-height:1.65;flex:1}
+.tpl-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tpl-tag{font-family:var(--mono);font-size:10px;color:rgba(45,58,82,.4);background:var(--card-bg);border-radius:4px;padding:2px 8px}
+
+/* CTA */
+.cta{padding:80px 3rem 120px;max-width:1200px;margin:0 auto}
+.cta-block{
+  background:var(--navy);border-radius:20px;
+  padding:80px 72px;
+  display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;
+  position:relative;overflow:hidden;
+}
+.cta-block::before{content:'';position:absolute;right:-120px;top:-120px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(123,158,217,.1) 0%,transparent 60%)}
+.cta-block::after{content:'';position:absolute;left:60px;bottom:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(184,212,200,.07) 0%,transparent 60%)}
+.cta-h2{font-size:clamp(28px,3.5vw,44px);font-weight:200;letter-spacing:-.03em;line-height:1.15;color:var(--white);position:relative;z-index:1}
+.cta-h2 em{font-style:normal;color:var(--muted-blue)}
+.cta-action{position:relative;z-index:1}
+.btn-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--white);color:var(--navy);
+  font-size:15px;font-weight:500;padding:14px 14px 14px 28px;
+  border-radius:99px;text-decoration:none;white-space:nowrap;
+  transition:transform .25s cubic-bezier(.32,.72,0,1),box-shadow .25s;
+}
+.btn-cta:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.2)}
+.btn-cta-icon{width:32px;height:32px;border-radius:50%;background:rgba(45,58,82,.08);display:flex;align-items:center;justify-content:center;font-size:14px;transition:transform .25s cubic-bezier(.32,.72,0,1)}
+.btn-cta:hover .btn-cta-icon{transform:translate(2px,-2px) scale(1.1)}
+
+/* CONTACT */
+.contact{padding:120px 3rem;background:var(--white);border-top:1px solid var(--border)}
+.contact-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.contact-left{}
+.contact-details{margin-top:40px;display:flex;flex-direction:column;gap:16px}
+.contact-item{display:flex;align-items:center;gap:14px;font-size:14px;color:rgba(45,58,82,.6);font-weight:300}
+.c-icon{width:36px;height:36px;border-radius:10px;background:var(--card-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c-icon svg{width:14px;height:14px;stroke:var(--blue);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+form{display:flex;flex-direction:column;gap:16px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:7px}
+label{font-size:12px;font-weight:400;color:rgba(45,58,82,.5);letter-spacing:.01em}
+.req{color:var(--blue)}
+input,textarea{
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:12px 16px;font-size:14px;font-family:var(--ff);
+  color:var(--navy);font-weight:300;outline:none;resize:none;
+  transition:border-color .15s,background .15s;
+}
+input::placeholder,textarea::placeholder{color:rgba(45,58,82,.3)}
+input:focus,textarea:focus{border-color:var(--blue);background:var(--white)}
+textarea{min-height:120px}
+.btn-send{
+  align-self:flex-start;
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--navy);color:var(--white);
+  font-size:14px;font-weight:500;padding:13px 13px 13px 26px;
+  border-radius:99px;border:none;cursor:none;font-family:var(--ff);
+  transition:transform .25s cubic-bezier(.32,.72,0,1),box-shadow .25s;
+}
+.btn-send:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(45,58,82,.22)}
+.btn-send-icon{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:13px;transition:transform .25s cubic-bezier(.32,.72,0,1)}
+.btn-send:hover .btn-send-icon{transform:translate(2px,-2px) scale(1.1)}
+.btn-send:disabled{opacity:.45;transform:none;box-shadow:none}
+#form-msg{font-size:13px;font-weight:400;display:none}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:28px 3rem}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.footer-copy{font-size:12px;color:rgba(45,58,82,.35)}
+.footer-links{display:flex;gap:24px;list-style:none}
+.footer-links a{font-size:12px;color:rgba(45,58,82,.35);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:rgba(45,58,82,.7)}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.rd1{transition-delay:.07s}.rd2{transition-delay:.14s}.rd3{transition-delay:.21s}
+.rd4{transition-delay:.28s}.rd5{transition-delay:.35s}
+@media(prefers-reduced-motion:reduce){
+  .reveal,.hero-badge,.hero-h1,.hero-sub,.hero-btns,.scroll-hint{opacity:1;transform:none;animation:none;transition:none}
+  .orb,.marquee-track,.scroll-line,.badge-dot{animation:none}
+  #cursor,#cursor-ring{display:none}
+  body{cursor:auto}
+}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  header{padding:0 1.5rem}
+  .services,.automation,.cta,.contact-inner{padding-left:1.5rem;padding-right:1.5rem}
+  .process{padding-left:1.5rem;padding-right:1.5rem}
+  .numbers{padding-left:1.5rem;padding-right:1.5rem}
+  
+  
+  .process-steps{grid-template-columns:1fr 1fr;gap:40px}
+  .process-steps::before{display:none}
+  .numbers-inner{grid-template-columns:1fr 1fr}
+  .tpl-grid{grid-template-columns:1fr 1fr}
+  .cta-block{grid-template-columns:1fr;padding:48px 36px}
+  .contact-inner{grid-template-columns:1fr;gap:48px}
+  .auto-head{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:640px){
+  .nav-links{display:none}
+  header{padding:0 1.25rem}
+  .hero{padding:0 1.25rem}
+  .services,.automation,.cta,.contact,.numbers{padding-left:1.25rem;padding-right:1.25rem}
+  .process{padding-left:1.25rem;padding-right:1.25rem}
+  footer{padding:24px 1.25rem}
+  .process-steps,.numbers-inner,.tpl-grid,.svc-grid{grid-template-columns:1fr}
+  .f-row{grid-template-columns:1fr}
+  .footer-inner{flex-direction:column;gap:12px;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<header id="site-header">
+  <a href="/" class="logo">
+    <svg viewBox="0 0 28 28" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Pravio logo">
+      <rect width="28" height="28" rx="6" fill="#7B9ED9"/>
+      <path d="M8 18L14 7L20 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5 21L14 4L23 21" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" opacity="0.28"/>
+      <line x1="5" y1="21" x2="23" y2="21" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="14" cy="21" r="2.2" fill="#B8D4C8"/>
+    </svg>
+    <span class="logo-name">pravio</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#automation">Templates</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Let's talk</a>
+</header>
+
+<!-- HERO -->
+<section class="hero" aria-label="Hero">
+  <div class="hero-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      QA Consulting Agency
+    </div>
+    <h1 class="hero-h1">
+      <span>Your quality</span>
+      <span class="line-medium">foundation,</span>
+      <span class="line-blue">built from scratch.</span>
+    </h1>
+    <p class="hero-sub">We partner with companies that have no QA structure and guide them through every step, from strategy and process design to automation and team building.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-fill">
+        Start a project
+        <span class="btn-fill-arrow">&#8599;</span>
+      </a>
+      <a href="#services" class="btn-line">See our services</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="marquee-dot"></span>QA Strategy</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Process Design</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Test Automation</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Team Building</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>QA Consulting</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Training & Enablement</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>CI/CD Integration</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Risk Assessment</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>QA Strategy</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Process Design</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Test Automation</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Team Building</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>QA Consulting</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Training & Enablement</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>CI/CD Integration</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Risk Assessment</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="reveal">
+    <p class="section-label">What we do</p>
+    <h2 class="section-h2">Everything quality.<br><em>Nothing generic.</em></h2>
+    <p class="section-sub">Every engagement is tailored to your product, your team, and where you want to go.</p>
+  </div>
+  <div class="svc-grid reveal rd1">
+
+    <div class="svc-card">
+      <div class="svc-icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+      <div class="svc-title">QA Strategy &amp; Process Design</div>
+      <p class="svc-desc">We build your quality framework from scratch, structured, scalable, and aligned with how your team actually works.</p>
+      <span class="svc-more">Learn more &#8599;</span>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-icon-wrap"><svg viewBox="0 0 24 24"><path d="M9 3h6M9 3v7l-4 7a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 17l-4-7V3"/><line x1="6.5" y1="14" x2="17.5" y2="14"/></svg></div>
+      <div class="svc-title">QA Testing</div>
+      <p class="svc-desc">Functional, regression, exploratory and end-to-end testing tailored to your product and business requirements.</p>
+      <span class="svc-more">Learn more &#8599;</span>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><line x1="12" y1="7" x2="12" y2="11"/><circle cx="8" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="15" r="1" fill="currentColor" stroke="none"/></svg></div>
+      <div class="svc-title">Test Automation</div>
+      <p class="svc-desc">Modern frameworks built for your stack, from tool selection to CI/CD pipeline setup and team training.</p>
+      <span class="svc-more">Learn more &#8599;</span>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"/></svg></div>
+      <div class="svc-title">QA Staffing &amp; Team Building</div>
+      <p class="svc-desc">We source, vet and onboard QA professionals covered by your engagement. The right engineers, aligned to your process from day one.</p>
+      <span class="svc-more">Learn more &#8599;</span>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="6" cy="18" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="6" r="2"/><line x1="7.4" y1="16.7" x2="10.6" y2="13.3"/><line x1="13.4" y1="10.7" x2="16.6" y2="7.3"/></svg></div>
+      <div class="svc-title">QA Consulting</div>
+      <p class="svc-desc">We audit your current processes, identify the gaps, and deliver a clear prioritized roadmap fast.</p>
+      <span class="svc-more">Learn more &#8599;</span>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 3L2 8l10 5 10-5-10-5z"/><path d="M2 8v6M6 10.5v5.5a6 6 0 0 0 12 0v-5.5"/></svg></div>
+      <div class="svc-title">Training &amp; Team Enablement</div>
+      <p class="svc-desc">We train your engineers on modern QA practices so the knowledge stays in-house long after we are done.</p>
+      <span class="svc-more">Learn more &#8599;</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-inner">
+    <div class="reveal">
+      <p class="section-label">How we work</p>
+      <h2 class="section-h2">From zero to operational.</h2>
+      <p class="section-sub">A clear, repeatable path. No guesswork.</p>
+    </div>
+    <div class="process-steps">
+      <div class="pstep reveal rd1">
+        <div class="pstep-circle">01</div>
+        <span class="pstep-phase">Assess</span>
+        <div class="pstep-title">Understand your baseline</div>
+        <p class="pstep-desc">We map your current state, your stack, and your team before writing a single line of process.</p>
+      </div>
+      <div class="pstep reveal rd2">
+        <div class="pstep-circle">02</div>
+        <span class="pstep-phase">Design</span>
+        <div class="pstep-title">Build the foundation</div>
+        <p class="pstep-desc">Strategy, standards, processes and tooling, all tailored to how your organization actually works.</p>
+      </div>
+      <div class="pstep reveal rd3">
+        <div class="pstep-circle">03</div>
+        <span class="pstep-phase">Execute</span>
+        <div class="pstep-title">Implement and automate</div>
+        <p class="pstep-desc">We deploy the frameworks, set up automation pipelines and staff the roles your operation needs.</p>
+      </div>
+      <div class="pstep reveal rd4">
+        <div class="pstep-circle">04</div>
+        <span class="pstep-phase">Enable</span>
+        <div class="pstep-title">Hand it over</div>
+        <p class="pstep-desc">We train your team to own and evolve the system independently, so quality scales with you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG NUMBERS -->
+<section class="numbers reveal">
+  <div class="numbers-inner">
+    <div class="num-cell">
+      <div class="num-val">100<span>%</span></div>
+      <div class="num-label">Of our projects are built from zero. No copy-paste frameworks, no generic templates.</div>
+    </div>
+    <div class="num-cell">
+      <div class="num-val">6</div>
+      <div class="num-label">Core services covering the full QA lifecycle, from strategy to team building.</div>
+    </div>
+    <div class="num-cell">
+      <div class="num-val" style="font-size:clamp(32px,4vw,48px);letter-spacing:-.03em">End&#8209;to&#8209;end</div>
+      <div class="num-label">Strategy to staffing, automation to training. One partner for every QA need.</div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTOMATION -->
+<section class="automation" id="automation">
+  <div class="auto-head reveal">
+    <div class="auto-head-left">
+      <p class="section-label">Automation templates</p>
+      <h2 class="section-h2">Start faster.<br><em style="font-style:normal;font-weight:400">Ship with confidence.</em></h2>
+      <p class="section-sub" style="margin-bottom:0">Production-ready templates built from real engagements.</p>
+    </div>
+    <a href="/automation" class="link-more">View all &#8594;</a>
+  </div>
+  <div class="tpl-grid reveal rd1">
+    <div class="tpl">
+      <div class="tpl-meta"><span class="tpl-cat">API Testing</span><span class="tpl-badge">Popular</span></div>
+      <div class="tpl-name">REST API Test Suite with Playwright</div>
+      <p class="tpl-desc">Full coverage for REST APIs with authentication, error handling, and response validation out of the box.</p>
+      <div class="tpl-tags"><span class="tpl-tag">Playwright</span><span class="tpl-tag">TypeScript</span><span class="tpl-tag">GitHub Actions</span></div>
+    </div>
+    <div class="tpl">
+      <div class="tpl-meta"><span class="tpl-cat">E2E</span><span class="tpl-badge">New</span></div>
+      <div class="tpl-name">E2E Login and Auth Flow Coverage</div>
+      <p class="tpl-desc">Pre-built test cases for login, registration, password reset, and session management across browsers.</p>
+      <div class="tpl-tags"><span class="tpl-tag">Playwright</span><span class="tpl-tag">Multi-browser</span></div>
+    </div>
+    <div class="tpl">
+      <div class="tpl-meta"><span class="tpl-cat">CI/CD</span></div>
+      <div class="tpl-name">GitHub Actions QA Pipeline</div>
+      <p class="tpl-desc">Ready-to-use workflow that runs your test suite on pull requests, with reporting and Slack notifications.</p>
+      <div class="tpl-tags"><span class="tpl-tag">GitHub Actions</span><span class="tpl-tag">Slack</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-block reveal">
+    <h2 class="cta-h2">Ready to build your<br><em>quality foundation?</em></h2>
+    <div class="cta-action">
+      <a href="#contact" class="btn-cta">
+        Let's talk
+        <span class="btn-cta-icon">&#8599;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <p class="section-label">Get in touch</p>
+      <h2 class="section-h2" style="margin-bottom:12px">Let's build your<br><span style="color:var(--blue)">quality foundation.</span></h2>
+      <p class="section-sub" style="margin-bottom:0">Tell us about your project and we'll get back to you within one business day.</p>
+      <div class="contact-details">
+        <div class="contact-item"><div class="c-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>hello@pravio.io</div>
+        <div class="contact-item"><div class="c-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>Response within one business day</div>
+      </div>
+    </div>
+    <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate class="reveal rd2">
+      <div class="f-row">
+        <div class="field"><label for="name">Name <span class="req">*</span></label><input id="name" name="name" type="text" required autocomplete="name" placeholder="Jane Smith"/></div>
+        <div class="field"><label for="email">Email <span class="req">*</span></label><input id="email" name="email" type="email" required autocomplete="email" placeholder="jane@company.com"/></div>
+      </div>
+      <div class="field"><label for="company">Company</label><input id="company" name="company" type="text" placeholder="Company name"/></div>
+      <div class="field"><label for="message">Message <span class="req">*</span></label><textarea id="message" name="message" required placeholder="Tell us about your project, your team size, and your current QA situation."></textarea></div>
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1"/>
+      <p id="form-msg" role="status" aria-live="polite"></p>
+      <button type="submit" id="form-btn" class="btn-send">
+        Send message
+        <span class="btn-send-icon">&#8599;</span>
+      </button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">&copy; 2025 Pravio. All rights reserved.</span>
+    <ul class="footer-links"><li><a href="#services">Services</a></li><li><a href="#process">Process</a></li><li><a href="#contact">Contact</a></li></ul>
+  </div>
+</footer>
+
+<script>
+/* CURSOR */
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)}
+animRing();
+document.querySelectorAll('a,button,.svc-cell,.tpl,.bc').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+});
+
+/* HEADER SCROLL */
+const hdr=document.getElementById('site-header');
+window.addEventListener('scroll',()=>{hdr.classList.toggle('scrolled',window.scrollY>40)},{passive:true});
+
+/* REVEAL */
+const io=new IntersectionObserver(e=>e.forEach(n=>{if(n.isIntersecting){n.target.classList.add('in');io.unobserve(n.target)}}),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* FORM */
+const form=document.getElementById('contact-form'),msg=document.getElementById('form-msg'),btn=document.getElementById('form-btn');
+if(form){form.addEventListener('submit',async e=>{
+  e.preventDefault();btn.disabled=true;
+  const t=btn.childNodes[0];t.textContent='Sending... ';msg.style.display='none';
+  try{
+    const r=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+    if(r.ok){msg.textContent="Message sent. We'll be in touch within one business day.";msg.style.color='var(--blue)';msg.style.display='block';form.reset();}
+    else throw new Error();
+  }catch{msg.textContent='Something went wrong. Please email us at hello@pravio.io.';msg.style.color='#EF4444';msg.style.display='block';}
+  btn.disabled=false;t.textContent='Send message ';
+});}
+</script>
+</body>
+</html>
