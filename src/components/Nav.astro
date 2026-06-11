@@ -1,0 +1,58 @@
+---
+import PravioLogo from './PravioLogo.astro';
+
+const navLinks = [
+  { label: 'Services',              href: '#services'   },
+  { label: 'Process',               href: '#process'    },
+  { label: 'Automation Templates',  href: '#automation' },
+];
+---
+
+<header
+  class="sticky top-0 z-50 bg-bg border-b border-border"
+  style="border-bottom-width: 0.5px;"
+>
+  <nav
+    class="max-w-[900px] mx-auto pl-0 pr-8 h-[60px] grid grid-cols-3 items-center"
+    aria-label="Main navigation"
+  >
+    <!-- Logo — columna izquierda, alineado al borde del contenedor -->
+    <a href="/" class="flex items-center gap-2.5 no-underline justify-self-start" aria-label="Pravio home">
+      <PravioLogo />
+      <div class="flex flex-col gap-0">
+        <span class="text-[20px] font-light tracking-[4px] text-navy leading-none">pravio</span>
+        <div class="flex items-center gap-[5px] mt-[3px]">
+          <div class="w-12 h-[1.8px] bg-blue rounded-sm"></div>
+          <div class="w-[5px] h-[5px] rounded-full bg-mint"></div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Links — columna central, centrados -->
+    <ul
+      class="hidden md:flex items-center justify-center gap-7 list-none m-0 p-0"
+      role="list"
+    >
+      {navLinks.map(({ label, href }) => (
+        <li>
+          <a
+            href={href}
+            class="relative text-[13px] font-normal text-navy no-underline opacity-70 hover:opacity-100 tracking-[0.02em] whitespace-nowrap transition-opacity duration-200 after:absolute after:bottom-[-3px] after:left-0 after:h-[1.5px] after:w-0 after:rounded-full after:bg-blue after:transition-all after:duration-200 hover:after:w-full"
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- CTA — columna derecha, alineado al borde -->
+    <div class="flex justify-end">
+      <a
+        href="#contact"
+        class="bg-blue text-white px-5 py-2 rounded-lg text-[13px] font-medium tracking-[0.02em] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(123,158,217,0.4)] active:translate-y-0"
+      >
+        Let's talk
+      </a>
+    </div>
+  </nav>
+</header>

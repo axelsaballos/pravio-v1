@@ -1,0 +1,34 @@
+---
+const currentYear = new Date().getFullYear();
+
+const links = [
+  { label: 'Services', href: '#services' },
+  { label: 'Process',  href: '#process'  },
+  { label: 'Contact',  href: '#contact'  },
+];
+---
+
+<footer
+  class="bg-bg border-t border-border py-9 px-8"
+  style="border-top-width: 0.5px;"
+>
+  <div class="max-w-[900px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <span class="text-[12px] text-navy opacity-40">
+      © {currentYear} Pravio. All rights reserved.
+    </span>
+    <nav aria-label="Footer navigation">
+      <ul class="flex gap-5 list-none m-0 p-0" role="list">
+        {links.map(({ label, href }) => (
+          <li>
+            <a
+              href={href}
+              class="text-[12px] text-navy opacity-50 no-underline hover:opacity-80 transition-opacity"
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</footer>

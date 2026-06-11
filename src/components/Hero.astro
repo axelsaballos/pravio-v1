@@ -1,0 +1,62 @@
+---
+const stats = [
+  { value: '100', suffix: '%', label: 'Projects built from zero' },
+  { value: '6',   suffix: '',  label: 'Core services'            },
+  { value: 'End', suffix: '-to-end', label: 'Strategy to staffing' },
+];
+---
+
+<section class="max-w-[900px] mx-auto px-8 pt-20 pb-18">
+  <!-- Eyebrow badge -->
+  <div
+    class="inline-flex items-center gap-2 bg-card-bg border border-border rounded-[20px] px-3.5 py-[5px] text-[12px] text-blue uppercase tracking-[0.06em] mb-7"
+    style="border-width: 0.5px;"
+  >
+    <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
+    QA Consulting Agency
+  </div>
+
+  <!-- Headline -->
+  <h1 class="font-serif text-[52px] font-normal leading-[1.15] text-navy mb-6 max-w-[700px]">
+    Your quality foundation,<br />
+    <em class="not-italic text-blue">built from scratch.</em>
+  </h1>
+
+  <!-- Subheadline -->
+  <p class="text-[17px] font-light leading-[1.75] text-navy opacity-75 max-w-[560px] mb-9">
+    We partner with companies that have no QA structure in place and guide them through every step
+    — from strategy and process design, to automation and team building.
+  </p>
+
+  <!-- Actions -->
+  <div class="flex items-center gap-4">
+    <a
+      href="#contact"
+      class="bg-navy text-bg px-7 py-[13px] rounded-[10px] text-[14px] font-medium tracking-[0.02em] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(45,58,82,0.22)] active:translate-y-0"
+    >
+      Start a project
+    </a>
+    <a
+      href="#services"
+      class="bg-transparent text-navy border border-border px-7 py-[13px] rounded-[10px] text-[14px] font-normal tracking-[0.02em] transition-all duration-150 hover:border-blue hover:-translate-y-0.5 hover:shadow-[0_4px_10px_rgba(45,58,82,0.08)] active:translate-y-0"
+      style="border-width: 0.5px;"
+    >
+      See our services
+    </a>
+  </div>
+
+  <!-- Stats -->
+  <div
+    class="flex gap-10 mt-14 pt-10 border-t border-border"
+    style="border-top-width: 0.5px;"
+  >
+    {stats.map(({ value, suffix, label }) => (
+      <div>
+        <div class="text-[28px] font-light text-navy tracking-[-0.5px]">
+          {value}<span class="text-blue">{suffix}</span>
+        </div>
+        <div class="text-[12px] text-navy opacity-50 tracking-[0.04em] mt-0.5">{label}</div>
+      </div>
+    ))}
+  </div>
+</section>
