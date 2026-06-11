@@ -1,0 +1,41 @@
+---
+const items = [
+  'QA Strategy', 'Process Design', 'Test Automation', 'Team Building',
+  'QA Consulting', 'Training & Enablement', 'CI/CD Integration', 'Risk Assessment',
+];
+---
+
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    {[...items, ...items].map((item) => (
+      <div class="marquee-item">
+        <span class="marquee-dot"></span>
+        {item}
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+.marquee-wrap {
+  overflow: hidden;
+  border-top: 1px solid #E2E8F4;
+  border-bottom: 1px solid #E2E8F4;
+  background: white;
+  padding: 18px 0;
+}
+.marquee-track {
+  display: flex; gap: 0; width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 48px; white-space: nowrap;
+  font-size: 13px; font-weight: 400; color: rgba(45,58,82,.45);
+  letter-spacing: .04em;
+}
+.marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: #B8D4C8; flex-shrink: 0; }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+</style>

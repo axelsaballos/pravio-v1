@@ -8,27 +8,26 @@ const links = [
 ];
 ---
 
-<footer
-  class="bg-bg border-t border-border py-9 px-8"
-  style="border-top-width: 0.5px;"
->
-  <div class="max-w-[900px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-    <span class="text-[12px] text-navy opacity-40">
-      © {currentYear} Pravio. All rights reserved.
-    </span>
-    <nav aria-label="Footer navigation">
-      <ul class="flex gap-5 list-none m-0 p-0" role="list">
-        {links.map(({ label, href }) => (
-          <li>
-            <a
-              href={href}
-              class="text-[12px] text-navy opacity-50 no-underline hover:opacity-80 transition-opacity"
-            >
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copy">&copy; {currentYear} Pravio. All rights reserved.</span>
+    <ul class="footer-links" role="list">
+      {links.map(({ label, href }) => (
+        <li><a href={href}>{label}</a></li>
+      ))}
+    </ul>
   </div>
 </footer>
+
+<style>
+.site-footer { border-top: 1px solid #E2E8F4; padding: 28px 3rem; }
+.footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.footer-copy  { font-size: 12px; color: rgba(45,58,82,.35); }
+.footer-links { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; }
+.footer-links a { font-size: 12px; color: rgba(45,58,82,.35); text-decoration: none; transition: color .15s; }
+.footer-links a:hover { color: rgba(45,58,82,.7); }
+@media (max-width: 640px) {
+  .site-footer { padding: 24px 1.25rem; }
+  .footer-inner { flex-direction: column; gap: 12px; align-items: flex-start; }
+}
+</style>

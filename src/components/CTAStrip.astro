@@ -1,17 +1,53 @@
 ---
 ---
 
-<section class="bg-navy py-[72px] px-8">
-  <div class="max-w-[900px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
-    <h2 class="font-serif text-[34px] font-normal text-bg leading-[1.25] max-w-[480px]">
-      Ready to build your<br />
-      <em class="not-italic text-muted-blue">quality foundation?</em>
-    </h2>
-    <a
-      href="#contact"
-      class="shrink-0 bg-bg text-navy px-[30px] py-[14px] rounded-[10px] text-[14px] font-medium tracking-[0.02em] whitespace-nowrap transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(244,246,251,0.25)] active:translate-y-0"
-    >
-      Let's talk →
-    </a>
+<section class="cta-section">
+  <div class="cta-block reveal">
+    <h2 class="cta-h2">Ready to build your<br><em>quality foundation?</em></h2>
+    <div class="cta-action">
+      <a href="#contact" class="btn-cta">
+        Let's talk
+        <span class="btn-cta-icon">&#8599;</span>
+      </a>
+    </div>
   </div>
 </section>
+
+<style>
+.cta-section { padding: 80px 3rem 120px; max-width: 1200px; margin: 0 auto; }
+.cta-block {
+  background: #2D3A52; border-radius: 20px; padding: 80px 72px;
+  display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center;
+  position: relative; overflow: hidden;
+}
+.cta-block::before {
+  content: ''; position: absolute; right: -120px; top: -120px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(123,158,217,.1) 0%, transparent 60%);
+}
+.cta-block::after {
+  content: ''; position: absolute; left: 60px; bottom: -80px;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,212,200,.07) 0%, transparent 60%);
+}
+.cta-h2 { font-size: clamp(28px, 3.5vw, 44px); font-weight: 200; letter-spacing: -.03em; line-height: 1.15; color: white; position: relative; z-index: 1; }
+.cta-h2 em { font-style: normal; color: #A8C5DA; }
+.cta-action { position: relative; z-index: 1; }
+.btn-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: white; color: #2D3A52;
+  font-size: 15px; font-weight: 500; padding: 14px 14px 14px 28px;
+  border-radius: 99px; text-decoration: none; white-space: nowrap;
+  transition: transform .25s cubic-bezier(.32,.72,0,1), box-shadow .25s;
+}
+.btn-cta:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,.2); }
+.btn-cta-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(45,58,82,.08);
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+  transition: transform .25s cubic-bezier(.32,.72,0,1);
+}
+.btn-cta:hover .btn-cta-icon { transform: translate(2px,-2px) scale(1.1); }
+@media (max-width: 960px) { .cta-block { grid-template-columns: 1fr; padding: 48px 36px; } }
+@media (max-width: 640px) { .cta-section { padding-left: 1.25rem; padding-right: 1.25rem; } }
+</style>

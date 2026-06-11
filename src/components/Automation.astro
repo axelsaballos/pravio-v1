@@ -4,65 +4,59 @@ import { automationTemplates } from '../data/automation';
 const featured = automationTemplates.filter((t) => t.featured);
 ---
 
-<section
-  id="automation"
-  class="bg-bg border-b border-border py-16 px-8"
-  style="border-bottom-width: 0.5px;"
->
-  <div class="max-w-[900px] mx-auto">
-    <p class="text-[11px] uppercase tracking-[0.1em] text-blue mb-3">Automation Templates</p>
-    <h2 class="font-serif text-[36px] font-normal text-navy leading-[1.2] mb-2.5">
-      Start faster.<br />Ship with confidence.
-    </h2>
-    <p class="text-[15px] font-light text-navy opacity-60 max-w-[480px] leading-[1.7] mb-11">
-      Production-ready automation templates built from real engagements. Drop them into your
-      stack and skip the setup boilerplate.
-    </p>
-
-    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none m-0 p-0" role="list">
-      {featured.map((tpl) => (
-        <li class="bg-white border border-border rounded-[14px] p-6 flex flex-col gap-3 transition-all duration-200 ease-out hover:border-blue hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(45,58,82,0.1)]" style="border-width: 0.5px;">
-          <div class="flex items-start justify-between gap-2">
-            <span class="text-[11px] uppercase tracking-[0.08em] text-blue font-medium">
-              {tpl.category}
-            </span>
-            {tpl.badge && (
-              <span class="text-[10px] uppercase tracking-[0.06em] font-medium px-2 py-0.5 rounded-full bg-card-bg text-navy opacity-70">
-                {tpl.badge}
-              </span>
-            )}
-          </div>
-          <div>
-            <h3 class="text-[15px] font-medium text-navy mb-1.5">{tpl.name}</h3>
-            <p class="text-[13px] font-light text-navy opacity-65 leading-[1.65]">
-              {tpl.description}
-            </p>
-          </div>
-          <div class="flex flex-wrap gap-1.5 mt-auto pt-1">
-            {tpl.tags.map((tag) => (
-              <span class="text-[11px] font-normal text-navy opacity-50 bg-card-bg rounded-[6px] px-2 py-0.5">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </li>
-      ))}
-    </ul>
-
-    <!-- CTA al catálogo completo -->
-    <div
-      class="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-8 border-t border-border"
-      style="border-top-width: 0.5px;"
-    >
-      <p class="text-[14px] font-light text-navy opacity-60">
-        6 templates available — browse the full catalog.
-      </p>
-      <a
-        href="/automation"
-        class="text-[13px] font-medium text-blue hover:opacity-75 transition-opacity tracking-[0.02em] whitespace-nowrap"
-      >
-        View all templates →
-      </a>
+<section id="automation" class="automation">
+  <div class="auto-head reveal">
+    <div class="auto-head-left">
+      <p class="a-label">Automation templates</p>
+      <h2 class="a-h2">Start faster.<br><em>Ship with confidence.</em></h2>
+      <p class="a-sub">Production-ready templates built from real engagements.</p>
     </div>
+    <a href="/automation" class="link-more">View all &#8594;</a>
+  </div>
+  <div class="tpl-grid reveal rd1">
+    {featured.map((tpl) => (
+      <div class="tpl">
+        <div class="tpl-meta">
+          <span class="tpl-cat">{tpl.category}</span>
+          {tpl.badge && <span class="tpl-badge">{tpl.badge}</span>}
+        </div>
+        <div class="tpl-name">{tpl.name}</div>
+        <p class="tpl-desc">{tpl.description}</p>
+        <div class="tpl-tags">
+          {tpl.tags.map((tag) => <span class="tpl-tag">{tag}</span>)}
+        </div>
+      </div>
+    ))}
   </div>
 </section>
+
+<style>
+.automation { padding: 120px 3rem; max-width: 1200px; margin: 0 auto; }
+.a-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #7B9ED9; margin-bottom: 16px; }
+.a-h2   { font-size: clamp(34px, 4vw, 54px); font-weight: 200; letter-spacing: -.03em; line-height: 1.1; color: #2D3A52; margin-bottom: 16px; }
+.a-h2 em { font-style: normal; font-weight: 400; }
+.a-sub  { font-size: 15px; font-weight: 300; color: rgba(45,58,82,.6); line-height: 1.75; max-width: 50ch; }
+.auto-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-bottom: 48px; }
+.auto-head-left { max-width: 480px; }
+.link-more { font-size: 13px; color: #7B9ED9; text-decoration: none; display: flex; align-items: center; gap: 5px; white-space: nowrap; align-self: flex-end; margin-bottom: 3px; transition: gap .15s; }
+.link-more:hover { gap: 10px; }
+.tpl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: #E2E8F4; border-radius: 16px; overflow: hidden; }
+.tpl { background: white; padding: 28px; display: flex; flex-direction: column; gap: 14px; transition: background .18s; }
+.tpl:hover { background: #E8EDF5; }
+.tpl-meta { display: flex; align-items: center; justify-content: space-between; }
+.tpl-cat  { font-family: var(--font-mono); font-size: 10px; letter-spacing: .07em; text-transform: uppercase; color: #7B9ED9; }
+.tpl-badge { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; background: rgba(123,158,217,.12); border-radius: 4px; padding: 3px 8px; color: #7B9ED9; }
+.tpl-name { font-size: 14px; font-weight: 500; color: #2D3A52; letter-spacing: -.01em; line-height: 1.35; }
+.tpl-desc { font-size: 12px; font-weight: 300; color: rgba(45,58,82,.6); line-height: 1.65; flex: 1; }
+.tpl-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tpl-tag  { font-family: var(--font-mono); font-size: 10px; color: rgba(45,58,82,.4); background: #E8EDF5; border-radius: 4px; padding: 2px 8px; }
+@media (max-width: 960px) {
+  .automation { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .tpl-grid { grid-template-columns: 1fr 1fr; }
+  .auto-head { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 640px) {
+  .automation { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .tpl-grid { grid-template-columns: 1fr; }
+}
+</style>

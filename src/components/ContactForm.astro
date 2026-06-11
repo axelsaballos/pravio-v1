@@ -1,150 +1,133 @@
 ---
-/**
- * Contact form powered by Formspree.
- * Replace FORMSPREE_FORM_ID in .env with your actual form ID from formspree.io.
- * The form ID is exposed client-side intentionally — it is not a secret.
- */
 const formId = import.meta.env.PUBLIC_FORMSPREE_FORM_ID ?? 'YOUR_FORM_ID';
 const action = `https://formspree.io/f/${formId}`;
 ---
 
-<section id="contact" class="bg-bg border-t border-border py-16 px-8" style="border-top-width:0.5px;">
-  <div class="max-w-[560px] mx-auto">
-    <p class="text-[11px] uppercase tracking-[0.1em] text-blue mb-3">Get in touch</p>
-    <h2 class="font-serif text-[36px] font-normal text-navy leading-[1.2] mb-2.5">
-      Let's build your<br /><em class="not-italic text-blue">quality foundation.</em>
-    </h2>
-    <p class="text-[15px] font-light text-navy opacity-60 leading-[1.7] mb-10">
-      Tell us about your project and we'll get back to you within one business day.
-    </p>
-
-    <form
-      id="contact-form"
-      action={action}
-      method="POST"
-      novalidate
-      class="flex flex-col gap-4"
-    >
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="flex flex-col gap-1.5">
-          <label for="name" class="text-[12px] font-medium text-navy tracking-[0.02em]">
-            Name <span class="text-blue" aria-hidden="true">*</span>
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            autocomplete="name"
-            placeholder="Jane Smith"
-            class="bg-white border border-border rounded-[8px] px-4 py-3 text-[14px] text-navy placeholder:opacity-40 focus:outline-none focus:border-blue transition-colors"
-            style="border-width: 0.5px;"
-          />
+<section id="contact" class="contact">
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <p class="c-label">Get in touch</p>
+      <h2 class="c-h2">Let's build your<br><span class="c-blue">quality foundation.</span></h2>
+      <p class="c-sub">Tell us about your project and we'll get back to you within one business day.</p>
+      <div class="contact-details">
+        <div class="contact-item">
+          <div class="c-icon">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#7B9ED9" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          hello@pravio.io
         </div>
-        <div class="flex flex-col gap-1.5">
-          <label for="email" class="text-[12px] font-medium text-navy tracking-[0.02em]">
-            Email <span class="text-blue" aria-hidden="true">*</span>
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            autocomplete="email"
-            placeholder="jane@company.com"
-            class="bg-white border border-border rounded-[8px] px-4 py-3 text-[14px] text-navy placeholder:opacity-40 focus:outline-none focus:border-blue transition-colors"
-            style="border-width: 0.5px;"
-          />
+        <div class="contact-item">
+          <div class="c-icon">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#7B9ED9" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          Response within one business day
         </div>
       </div>
+    </div>
 
-      <div class="flex flex-col gap-1.5">
-        <label for="company" class="text-[12px] font-medium text-navy tracking-[0.02em]">
-          Company
-        </label>
-        <input
-          id="company"
-          name="company"
-          type="text"
-          autocomplete="organization"
-          placeholder="Acme Inc."
-          class="bg-white border border-border rounded-[8px] px-4 py-3 text-[14px] text-navy placeholder:opacity-40 focus:outline-none focus:border-blue transition-colors"
-          style="border-width: 0.5px;"
-        />
+    <form id="contact-form" action={action} method="POST" novalidate class="contact-form reveal rd2">
+      <div class="f-row">
+        <div class="field">
+          <label for="name">Name <span class="req">*</span></label>
+          <input id="name" name="name" type="text" required autocomplete="name" placeholder="Jane Smith" />
+        </div>
+        <div class="field">
+          <label for="email">Email <span class="req">*</span></label>
+          <input id="email" name="email" type="email" required autocomplete="email" placeholder="jane@company.com" />
+        </div>
       </div>
-
-      <div class="flex flex-col gap-1.5">
-        <label for="message" class="text-[12px] font-medium text-navy tracking-[0.02em]">
-          Message <span class="text-blue" aria-hidden="true">*</span>
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          required
-          rows="5"
-          placeholder="Tell us about your project, your team size, and your current QA situation..."
-          class="bg-white border border-border rounded-[8px] px-4 py-3 text-[14px] text-navy placeholder:opacity-40 focus:outline-none focus:border-blue transition-colors resize-none"
-          style="border-width: 0.5px;"
-        ></textarea>
+      <div class="field">
+        <label for="company">Company</label>
+        <input id="company" name="company" type="text" placeholder="Company name" />
       </div>
-
-      <!-- Honeypot — catches bots without a CAPTCHA -->
-      <input type="text" name="_gotcha" class="hidden" tabindex="-1" aria-hidden="true" />
-
-      <!-- Status message (shown via JS) -->
-      <p
-        id="form-status"
-        role="status"
-        aria-live="polite"
-        class="hidden text-[13px] font-medium"
-      ></p>
-
-      <button
-        type="submit"
-        id="form-submit"
-        class="self-start bg-navy text-bg px-7 py-[13px] rounded-[10px] text-[14px] font-medium tracking-[0.02em] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(45,58,82,0.22)] active:translate-y-0 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none"
-      >
+      <div class="field">
+        <label for="message">Message <span class="req">*</span></label>
+        <textarea id="message" name="message" required placeholder="Tell us about your project, your team size, and your current QA situation."></textarea>
+      </div>
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" aria-hidden="true" />
+      <p id="form-status" role="status" aria-live="polite" class="form-msg"></p>
+      <button type="submit" id="form-submit" class="btn-send">
         Send message
+        <span class="btn-send-icon">&#8599;</span>
       </button>
     </form>
   </div>
 </section>
 
+<style>
+.contact { padding: 120px 3rem; background: white; border-top: 1px solid #E2E8F4; }
+.contact-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.c-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #7B9ED9; margin-bottom: 16px; }
+.c-h2    { font-size: clamp(34px, 4vw, 54px); font-weight: 200; letter-spacing: -.03em; line-height: 1.1; color: #2D3A52; margin-bottom: 12px; }
+.c-blue  { color: #7B9ED9; }
+.c-sub   { font-size: 15px; font-weight: 300; color: rgba(45,58,82,.6); line-height: 1.75; max-width: 50ch; }
+.contact-details { margin-top: 40px; display: flex; flex-direction: column; gap: 16px; }
+.contact-item { display: flex; align-items: center; gap: 14px; font-size: 14px; color: rgba(45,58,82,.6); font-weight: 300; }
+.c-icon { width: 36px; height: 36px; border-radius: 10px; background: #E8EDF5; border: 1px solid #E2E8F4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.contact-form { display: flex; flex-direction: column; gap: 16px; }
+.f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 7px; }
+label { font-size: 12px; font-weight: 400; color: rgba(45,58,82,.5); letter-spacing: .01em; }
+.req { color: #7B9ED9; }
+input, textarea {
+  background: #F4F6FB; border: 1px solid #E2E8F4; border-radius: 10px;
+  padding: 12px 16px; font-size: 14px; font-family: var(--font-sans);
+  color: #2D3A52; font-weight: 300; outline: none; resize: none;
+  transition: border-color .15s, background .15s;
+}
+input::placeholder, textarea::placeholder { color: rgba(45,58,82,.3); }
+input:focus, textarea:focus { border-color: #7B9ED9; background: white; }
+textarea { min-height: 120px; }
+.btn-send {
+  align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #2D3A52; color: white;
+  font-size: 14px; font-weight: 500; padding: 13px 13px 13px 26px;
+  border-radius: 99px; border: none; cursor: none; font-family: var(--font-sans);
+  transition: transform .25s cubic-bezier(.32,.72,0,1), box-shadow .25s;
+}
+.btn-send:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(45,58,82,.22); }
+.btn-send-icon { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; font-size: 13px; transition: transform .25s cubic-bezier(.32,.72,0,1); }
+.btn-send:hover .btn-send-icon { transform: translate(2px,-2px) scale(1.1); }
+.btn-send:disabled { opacity: .45; transform: none; box-shadow: none; }
+.form-msg { font-size: 13px; font-weight: 400; display: none; }
+@media (max-width: 960px) {
+  .contact { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+  .f-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) { .contact { padding-left: 1.25rem; padding-right: 1.25rem; } }
+</style>
+
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const form   = document.getElementById('contact-form') as HTMLFormElement | null;
   const status = document.getElementById('form-status') as HTMLParagraphElement | null;
-  const submit = document.getElementById('form-submit') as HTMLButtonElement | null;
+  const btn    = document.getElementById('form-submit') as HTMLButtonElement | null;
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!form || !status || !submit) return;
-
-    submit.disabled = true;
-    submit.textContent = 'Sending…';
-    status.className = 'hidden text-[13px] font-medium';
-
+    if (!form || !status || !btn) return;
+    btn.disabled = true;
+    const label = btn.childNodes[0] as Text;
+    label.textContent = 'Sending… ';
+    status.style.display = 'none';
     try {
-      const res = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { Accept: 'application/json' },
-      });
-
-      if (res.ok) {
-        status.textContent = "Message sent — we'll be in touch within one business day.";
-        status.className = 'text-[13px] font-medium text-blue';
+      const r = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      if (r.ok) {
+        status.textContent = "Message sent. We'll be in touch within one business day.";
+        status.style.color = '#7B9ED9'; status.style.display = 'block';
         form.reset();
-        submit.textContent = 'Send message';
-        submit.disabled = false;
-      } else {
-        const data = await res.json().catch(() => ({}));
-        throw new Error((data as any).error ?? 'Submission failed');
-      }
-    } catch (err) {
-      status.textContent = 'Something went wrong. Please email us directly.';
-      status.className = 'text-[13px] font-medium text-red-500';
-      submit.textContent = 'Send message';
-      submit.disabled = false;
+      } else throw new Error();
+    } catch {
+      status.textContent = 'Something went wrong. Please email us at hello@pravio.io.';
+      status.style.color = '#EF4444'; status.style.display = 'block';
     }
+    btn.disabled = false; label.textContent = 'Send message ';
   });
 </script>

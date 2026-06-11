@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@200;300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'DM Sans', sans-serif;
-  --font-serif: 'DM Serif Display', serif;
+  --font-sans:  'Geist', -apple-system, sans-serif;
+  --font-serif: 'Geist', -apple-system, sans-serif;
+  --font-mono:  'Geist Mono', monospace;
 
   --color-bg:         #F4F6FB;
   --color-navy:       #2D3A52;
@@ -17,10 +18,52 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   font-family: var(--font-sans);
   background-color: var(--color-bg);
   color: var(--color-navy);
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* Custom cursor */
+#cursor {
+  position: fixed; width: 12px; height: 12px;
+  background: #2D3A52; border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .2s cubic-bezier(.32,.72,0,1), height .2s cubic-bezier(.32,.72,0,1), background .2s;
+  mix-blend-mode: multiply;
+}
+#cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(45,58,82,.3); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform .08s linear, width .3s cubic-bezier(.32,.72,0,1), height .3s cubic-bezier(.32,.72,0,1), opacity .2s;
+}
+body.cursor-hover #cursor { width: 40px; height: 40px; background: #7B9ED9; opacity: .3; }
+body.cursor-hover #cursor-ring { opacity: 0; }
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+.rd1 { transition-delay: .07s; }
+.rd2 { transition-delay: .14s; }
+.rd3 { transition-delay: .21s; }
+.rd4 { transition-delay: .28s; }
+.rd5 { transition-delay: .35s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; animation: none; transition: none; }
+  #cursor, #cursor-ring { display: none; }
+  body { cursor: auto; }
 }

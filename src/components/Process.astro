@@ -2,43 +2,65 @@
 import { processSteps } from '../data/process';
 ---
 
-<section
-  id="process"
-  class="bg-white border-y border-border py-16 px-8"
-  style="border-top-width: 0.5px; border-bottom-width: 0.5px;"
->
-  <div class="max-w-[900px] mx-auto">
-    <p class="text-[11px] uppercase tracking-[0.1em] text-blue mb-3">How we work</p>
-    <h2 class="font-serif text-[36px] font-normal text-navy leading-[1.2]">
-      From zero to operational.
-    </h2>
-
-    <ol
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 mt-11 list-none m-0 p-0"
-      role="list"
-    >
-      {processSteps.map((step, index) => (
-        <li
-          class:list={[
-            'pr-6 relative',
-            index > 0 && 'lg:pl-6',
-          ]}
-        >
-          {index < processSteps.length - 1 && (
-            <div
-              class="hidden lg:block absolute right-0 top-4 w-px h-10 bg-border"
-              aria-hidden="true"
-            />
-          )}
-          <div class="text-[11px] text-blue tracking-[0.08em] mb-2.5 font-medium">
-            {step.number} — {step.phase}
-          </div>
-          <h4 class="text-[14px] font-medium text-navy mb-1.5">{step.title}</h4>
-          <p class="text-[12px] font-light text-navy opacity-55 leading-[1.6]">
-            {step.description}
-          </p>
-        </li>
+<section id="process" class="process">
+  <div class="process-inner">
+    <div class="reveal">
+      <p class="p-label">How we work</p>
+      <h2 class="p-h2">From zero to operational.</h2>
+      <p class="p-sub">A clear, repeatable path. No guesswork.</p>
+    </div>
+    <div class="process-steps">
+      {processSteps.map((step, i) => (
+        <div class={`pstep reveal rd${i + 1}`}>
+          <div class="pstep-circle">{step.number}</div>
+          <span class="pstep-phase">{step.phase}</span>
+          <div class="pstep-title">{step.title}</div>
+          <p class="pstep-desc">{step.description}</p>
+        </div>
       ))}
-    </ol>
+    </div>
   </div>
 </section>
+
+<style>
+.process {
+  background: #2D3A52; padding: 120px 3rem;
+  position: relative; overflow: hidden;
+}
+.process::before {
+  content: ''; position: absolute; top: -200px; right: -200px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(123,158,217,.12) 0%, transparent 70%);
+}
+.process-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+.p-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #B8D4C8; margin-bottom: 16px; }
+.p-h2   { font-size: clamp(34px, 4vw, 54px); font-weight: 200; letter-spacing: -.03em; line-height: 1.1; color: white; margin-bottom: 16px; }
+.p-sub  { font-size: 15px; font-weight: 300; color: rgba(255,255,255,.5); line-height: 1.75; max-width: 50ch; margin-bottom: 80px; }
+.process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+.process-steps::before {
+  content: ''; position: absolute; top: 20px;
+  left: calc(12.5% + 20px); right: calc(12.5% + 20px);
+  height: 1px; background: linear-gradient(to right, #7B9ED9, rgba(123,158,217,.1));
+}
+.pstep { padding: 0 2rem 0 0; position: relative; z-index: 1; }
+.pstep-circle {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: #7B9ED9;
+  margin-bottom: 24px; flex-shrink: 0;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+}
+.pstep-phase { font-family: var(--font-mono); font-size: 10px; letter-spacing: .07em; text-transform: uppercase; color: rgba(255,255,255,.25); display: block; margin-bottom: 10px; }
+.pstep-title { font-size: 15px; font-weight: 500; color: white; margin-bottom: 8px; letter-spacing: -.01em; }
+.pstep-desc  { font-size: 13px; font-weight: 300; color: rgba(255,255,255,.45); line-height: 1.65; }
+@media (max-width: 960px) {
+  .process { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .process-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .process-steps::before { display: none; }
+}
+@media (max-width: 640px) {
+  .process { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .process-steps { grid-template-columns: 1fr; }
+}
+</style>
